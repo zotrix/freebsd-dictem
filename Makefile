@@ -1,8 +1,5 @@
-# New ports collection makefile for:	dictem
-# Date created:				24 Apr 2006
-# Whom:					Max N. Boyarov <m.boyarov@gmail.com>
-#
-# $FreeBSD$
+# Created by: Max N. Boyarov <m.boyarov@gmail.com>
+# $FreeBSD:$
 
 PORTNAME=	dictem
 PORTVERSION=	1.0.4
@@ -27,6 +24,7 @@ PLIST_DIRS+=	${LISPDIR}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 PORTDOCS+=	README AUTHORS NEWS COPYING TODO
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
@@ -43,15 +41,13 @@ do-build:
 		-f batch-byte-compile ${WRKSRC}/${f}
 .endfor
 
-
 do-install:
 	${MKDIR} ${PREFIX}/${LISPDIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} ${SRC_EL} ${SRC_EL:S/.el$/.elc/} \
 		 ${PREFIX}/${LISPDIR}/
 
-
 post-install:
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${DOCSDIR}
 .for doc in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${doc} ${DOCSDIR}
